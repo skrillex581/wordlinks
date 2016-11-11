@@ -1,0 +1,41 @@
+{%extends 'base.html'%} {%load static%} {%block title%}Location Information{%endblock%} {%block body%}
+<link rel="stylesheet" href="{% static 'bower_components/openlayers/ol.css' %}">
+<link rel="stylesheet" href="{% static 'bower_components/angular-openlayers-directive/css/markers.css' %}">
+<link rel="stylesheet" href="{% static 'bower_components/angular-openlayers-directive/css/openlayers.css' %}">
+<div class="row">
+    <mymap></mymap>
+    <div id="wait_indicator" class="pull-right" ng-show="http_busy"><img src="{% static 'images/gps.gif' %}" />Please wait...</div>
+    {%verbatim%}
+    <div id="selector" class="col-md-3" ng-controller="mapactions">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tr ng-show="!data.length">
+                <td colspan="2">No data.</td>
+            </tr>
+            <tr ng-repeat="n in data">
+                <td><a href="#" ng-click="ondateclick(n.Date)">{{n.Date}}</a></td>
+                <td>{{n.Count}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="map" class="map col-md-9" ng-controller="GeoJSONController">
+        <openlayers ol-center="mymapcentre" height="400px">
+            <ol-layer ol-layer-properties="geojson"></ol-layer>
+        </openlayers>
+    </div>
+</div>
+{%endverbatim%} {%endblock%} {%block scripts%}
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.16.0/ol.js"></script>
+-->
+
+<script text="text/javascript" src="{% static 'bower_components/openlayers/ol.js' %}"></script>
+<script text="text/javascript" src="{% static 'bower_components/angular-openlayers-directive/dist/angular-openlayers-directive.min.no-header.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/ag-geotrack.js' %}"></script>
+{%endblock%}

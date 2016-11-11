@@ -1,0 +1,33 @@
+ {%extends 'base.html'%} {%load static%} {%block title%}Approvals{%endblock%} {%block body%}
+
+<div ng-controller="approvals">
+    <div id="wait_indicator" class="pull-right" ng-show="http_busy"><img src="/static/images/gps.gif" />Please wait...</div>
+    {%verbatim%}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>IpAddress</th>
+                <th>Username</th>
+                <th>Created Date</th>
+                <th>Email</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tr ng-show="!data.length">
+            <td colspan="5">Nothing to approve.</td>
+        </tr>
+        <tr ng-repeat="n in data">
+            <td>{{n.IpAddress}}</td>
+            <td>{{n.Username}}</td>
+            <td>{{n.CreatedDate}}</td>
+            <td>{{n.Email}}</td>
+            <td><button class="btn btn-success btn_approval" ng-click="onclick(n.Id)">Approve</button>&nbsp;<button class="btn btn-danger">Reject</button></td>
+        </tr>
+    </table>
+    {%endverbatim%}
+</div>
+
+{%endblock%} {%block scripts%}
+<script text="text/javascript" src="{% static 'bower_components/angular-openlayers-directive/dist/angular-openlayers-directive.min.no-header.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/ag-geotrack.js' %}"></script>
+{%endblock%}

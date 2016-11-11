@@ -1,0 +1,26 @@
+{%extends 'base.html'%} {%load static%} {%block title%}Register for an account!{%endblock%} {%block body%}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h2 class="text-danger">Close My Account</h2>
+        <form method="POST">
+            {%csrf_token%}
+            <div asp-validation-summary="ValidationSummary.ModelOnly"></div>
+            <div class="form-group">
+                <label for="txUsername">Username</label>
+                <input id="txUsername" name="txUsername" class="form-control" value="{{user.username}}" required readonly/>
+            </div>
+            <div class="form-group">
+                <label asp-for="txPassword">Password</label>
+                <input id="txPassword" name="txPassword" type="input" class="form-control" required />
+
+            </div>
+            <div class="form-group">
+                <a class="btn btn-default" href="{%url 'index'%}">Cancel</a>
+                <input type="submit" value="Close My Account" class="btn btn-danger" />
+            </div>
+        </form>
+    </div>
+</div>
+{%endblock%} {%block scripts%}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.js"></script>
+{%endblock%}

@@ -1,0 +1,25 @@
+{%extends 'base.html'%} {%load static%} {%block title%}Register for an account!{%endblock%} {%block body%}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h2>Register for Account</h2>
+        <form method="POST">
+            {%csrf_token%}            
+            <div class="form-group">
+                <label for="txEmail">Email Address</label>
+                <input id="txEmail" name="txEmail" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="txEmailConfirm">Retype Email Address</label>
+                <input id="txEmailConfirm" name="txEmailConfirm" type="input" class="form-control" required />
+
+            </div>
+            <div class="form-group">
+                <a class="btn btn-default" href="{%url 'index'%}">Cancel</a>
+                <input type="submit" value="Submit" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+{%endblock%} {%block scripts%}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.js"></script>
+{%endblock%}

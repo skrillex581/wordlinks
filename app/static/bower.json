@@ -1,0 +1,9 @@
+{
+  "name": "angular",
+  "version": "1.4.9",
+  "main": "./angular.js",
+  "ignore": [],
+  "dependencies": {
+    "angular-openlayers-directive": "^1.14.0"
+  }
+}

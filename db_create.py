@@ -1,36 +1,36 @@
 #!/usr/bin/env python
 from migrate.versioning import api
-from config import SQLALCHEMY_DATABASE_URI
-from config import SQLALCHEMY_MIGRATE_REPO
+from config import SQLALCHEMY_DATABASE_URI,SQLALCHEMY_MIGRATE_REPO, LOG_FILE_NAME
 from config import WORD_FILE
-from app import db,models
+from app import db,models,app
 from colorama import init
-
+import logging
+from logging.handlers import RotatingFileHandler
 import os.path
 
-print SQLALCHEMY_MIGRATE_REPO
-print SQLALCHEMY_DATABASE_URI
-print WORD_FILE
-
 init()
+handler = RotatingFileHandler(LOG_FILE_NAME,maxBytes=10000, backupCount=1)
+handler.setLevel(logging.INFO)
+app.logger.addHandler(handler)
 db.create_all()
 if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):
 	api.create(SQLALCHEMY_MIGRATE_REPO, 'database repository')
 	api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
-	print "Importing word lists..."
+	app.logger.info("Creating database... {0}".format(SQLALCHEMY_DATABASE_URI))
+	app.logger.info("Importing word lists...")
 	c = 0
-	if os.path.isfile(WORD_FILE):		
+	if os.path.isfile(WORD_FILE):
 		with open(WORD_FILE) as f:
 			for line in f:
-				c +=1
+				c += 1
 				line = line.strip()
-				w= models.Word(word=line,wordlength=len(line))
+				w = models.Word(word=line, wordlength=len(line), sortedword=''.join(sorted(line)))
 				db.session.add(w)
-		db.session.commit()		
-		print "%d words added." %(c)
+		db.session.commit()
+		app.logger.info("Completed.")
+		app.logger.info("%d words added." %(c))
 	else:
-		print Fore.RED + "World file not found. Could not create word list."
-		print Style.RESET_ALL 
+		app.logger.info("World file not found '{0}'. Could not create word list.".format(WORD_FILE))
 	
 else:
 	api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO, api.version(SQLALCHEMY_MIGRATE_REPO))

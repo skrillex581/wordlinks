@@ -1,9 +1,12 @@
 from itertools import chain, combinations, permutations
-
-from flask import jsonify, make_response, render_template
+import logging
+from forms import RegistrationForm
+from flask import jsonify, make_response, render_template,request
+from flask_mail import Message
+from flask_user import login_required, UserManager, UserMixin
 from sqlalchemy.sql.expression import func
 
-from app import app, db
+from app import app, db, mail
 from app.utils.spgraph import PathNotFound
 from models import Word
 from wordlist import Graph
@@ -13,6 +16,8 @@ from wordlist import Graph
 @app.route('/')
 @app.route('/index')
 def index():
+    msg = Message("Hello",recipients=["mailbox@a20.co.za"])
+    mail.send(msg)
     return render_template('index.html',user={})
 @app.route('/logoutuser')
 def logoutuser():
@@ -23,9 +28,15 @@ def closemyaccount():
 @app.route('/approvals')
 def approvals():
     return render_template('approvals.html')
-@app.route('/register')
-def register():
-    return render_template('register.html')
+
+@app.route('/register', methods=['GET','POST'])
+def register():    
+    form = RegistrationForm(txEmail="zahirj@mweb.co.za")
+    if request.method=="GET":
+        app.logger.info("This is a get")
+    else:
+        app.logger.info("This is a POST")    
+    return render_template("register.html", user={}, form=form)
 @app.route('/about')
 def about():
     return render_template('about.html')    
@@ -85,6 +96,7 @@ def updatesorted():
 
 @app.route('/wordsapi/v1.0/words/ladder/<string:word1>/<string:word2>/',methods=['GET'])
 def get_wordladder(word1, word2):
+    app.logger.info("Trying to find ladder between {0} and {1}".format(word1,word2))
     if not len(word1.strip())==len(word2.strip()):
         return make_response(jsonify(error='Word lengths do not match.'),500)
     else:

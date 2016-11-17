@@ -2,17 +2,22 @@
 from migrate.versioning import api
 from config import SQLALCHEMY_DATABASE_URI,SQLALCHEMY_MIGRATE_REPO, LOG_FILE_NAME
 from config import WORD_FILE
-from app import db,models,app
+from app import db,models,app,user_datastore
 from colorama import init
 import logging
 from logging.handlers import RotatingFileHandler
+from hashlib import sha256
 import os.path
 
 init()
 handler = RotatingFileHandler(LOG_FILE_NAME,maxBytes=10000, backupCount=1)
 handler.setLevel(logging.INFO)
 app.logger.addHandler(handler)
+
+app.logger.info("About to call db.create_all().")
 db.create_all()
+app.logger.info("db.create_all() completed.")
+
 if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):
 	api.create(SQLALCHEMY_MIGRATE_REPO, 'database repository')
 	api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)

@@ -1,49 +1,44 @@
 from itertools import chain, combinations, permutations
 import logging
 from forms import RegistrationForm
-from flask import jsonify, make_response, render_template,request
+from flask import jsonify, make_response, render_template,request,g
 from flask_mail import Message
-from flask_user import login_required, UserManager, UserMixin
 from sqlalchemy.sql.expression import func
 
 from app import app, db, mail
 from app.utils.spgraph import PathNotFound
-from models import Word
+from models import Word, User, Role
 from wordlist import Graph
+
+from flask_security import SQLAlchemyUserDatastore, Security, login_required
+from flask_security import current_user
+from utils.crypto import getsha256
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
 
 
 # tears->smile
 @app.route('/')
 @app.route('/index')
-def index():
-    msg = Message("Hello",recipients=["mailbox@a20.co.za"])
-    mail.send(msg)
+def index():    
     return render_template('index.html',user={})
+
 @app.route('/logoutuser')
 def logoutuser():
     return render_template('index.html')
+
 @app.route('/closemyaccount')
 def closemyaccount():
     return render_template('closemyaccount.html')
+
 @app.route('/approvals')
 def approvals():
     return render_template('approvals.html')
 
-@app.route('/register', methods=['GET','POST'])
-def register():    
-    form = RegistrationForm(txEmail="zahirj@mweb.co.za")
-    if request.method=="GET":
-        app.logger.info("This is a get")
-    else:
-        app.logger.info("This is a POST")    
-    return render_template("register.html", user={}, form=form)
 @app.route('/about')
+@login_required
 def about():
     return render_template('about.html')    
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
 
 # API 
 
@@ -106,3 +101,16 @@ def get_wordladder(word1, word2):
             return jsonify(error='',words=g.FindLadder(word1,word2))
         except PathNotFound,e:	
             return make_response(jsonify(words=[],error='Path not found between %s and %s'%(word1,word2)),500)
+
+
+#####################
+@app.before_first_request
+def create_initial_data():
+    msg = Message("Application has started",recipients=["mailbox@a20.co.za"])    
+    mail.send(msg)    
+    pass
+
+@app.before_request
+def before_request():
+    print "Requesting something"
+    g.user = current_user

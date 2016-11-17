@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-    <title>
-        Word Links::{%block title%}{%endblock%}
-    </title>
-    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <!-- united, yeti, simplex, sandstone, spacelab, superhero-->
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/yeti/bootstrap.min.css" rel="stylesheet" integrity="sha384-yxFy3Tt84CcGRj9UI7RA25hoUMpUPoFzcdPtK3hBdNgEGnh9FdKgMVM+lbAZTKN2" crossorigin="anonymous">
-    <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.css">
+{%extends 'base.html'%} {%block title%}Login{%endblock%} {% from "security/_macros.html" import render_field, render_field_with_errors, render_checkbox_field %} {% include "security/_messages.html" %} {%block body%}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h2>Regsiter User</h2>
+        <form action="{{ url_for_security('register') }}" method="POST" name="register_form">
+            {{ register_user_form.hidden_tag() }} {{ register_user_form.email.label }} {{ register_user_form.email }}<br/> {{ register_user_form.password.label }} {{ register_user_form.password }}<br/> {{ register_user_form.password_confirm.label }} {{
+            register_user_form.password_confirm }}<br/> {{ register_user_form.submit }}
+        </form>
+    </div>
+</div>
+{%endblock%} {%block scripts%}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.js"></script>
+{%endblock%}l="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="/static/css/site.css">
 </head>
 
@@ -20,15 +20,11 @@
         <a href="{{url_for('index')}}"><img src="/static/images/maze.png" /></a>
         <ul class="menu">
             <li><a href="{{url_for('index')}}">Home</a></li>
-            {% if not user.is_authenticated %}
-            <li><a href="{{url_for('login')}}">Login</a></li>
-            <li><a href="{{url_for('register')}}">Register for an Account</a></li>
-            {%endif%} {% if user.is_staff %}
-            <li><a href="{{url_for('approvals')}}">Approvals</a></li>
-            {%endif%} {% if user.is_authenticated %}
-            <li><a href="{{url_for('viewlocations')}}">View Locations</a></li>
-            <li><a href="{{url_for('closemyaccount')}}">Close my Account</a></li>
-            <li><a href="{{url_for('logoutuser')}}">Logout</a></li>
+            {% if not current_user.is_authenticated() %}
+            <li><a href="{{url_for_security('login')}}">Login</a></li>
+            <li><a href="{{url_for_security('register')}}">Register for an Account</a></li>
+            {%else%}
+            <li><a href="{{url_for_security('logout')}}">Logout</a></li>
             {%endif%}
             <li><a href="{{url_for('about')}}">About</a></li>
         </ul>
@@ -43,26 +39,7 @@
             </button>
                     </li>
                 </ul>
-                <a asp-controller="App" asp-action="Index" class="navbar-brand">Word Linx</a> {% if user.is_authenticated %}
-                <ul class="nav navbar-nav navbar-right">
-
-                    <li>
-                        <a href="#" class="btn btn-sm btn-info">
-                            <i class="fa fa-save"></i> Save
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="btn btn-sm btn-info">
-                            <i class="fa fa-print"></i> Print
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('logoutuser')}}" class="btn btn-sm btn-info">
-                            <i class="fa fa-sign-out"></i> Logout
-                        </a>
-                    </li>
-                </ul>
-                {%endif%}
+                <a asp-controller="App" asp-action="Index" class="navbar-brand">Word Linx</a>
             </div>
         </nav>
         <div id="main" ng-app="geotracker">

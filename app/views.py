@@ -40,6 +40,11 @@ def approvals():
 def about():
     return render_template('about.html')    
 
+@app.route('/wordladder')
+@login_required
+def wordladder():
+    return render_template('wordladder.html')
+
 # API 
 
 @app.route('/wordsapi/v1.0/words/<int:length>',methods=['GET'])

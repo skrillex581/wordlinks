@@ -41,9 +41,7 @@
                 <a asp-controller="App" asp-action="Index" class="navbar-brand">Word Linx</a>
             </div>
         </nav>
-        <div id="main" ng-app="geotracker">
-
-
+        <div id="main" ng-app="wordgames">
             {% if messages %} {% for message in messages %}
             <div class="alert alert-{{message.tags}}">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -51,10 +49,10 @@
             {% endfor %} {% endif %} {% block body %} {% endblock %}
 
             <div id="footer">
-                &copy; 2015 Zahir Jacobs. Location data is stored outside South Africa on servers beyond my control. Apart from your randomly generated username, no other identifiable information is stored (including the email address your gave upon registration.)
+                &copy; 2015 Jacobs.
             </div>
         </div>
-        <script text="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script text="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script text="text/javascript" src="/static/bower_components/angular/angular.min.js"></script>
         <script text="text/javascript" src="/static/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
         <script text="text/javascript" src="/static/js/site.js"></script>

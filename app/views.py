@@ -8,7 +8,7 @@ from sqlalchemy.sql.expression import func
 from app import app, db, mail
 from app.utils.spgraph import PathNotFound
 from models import Word, User, Role
-from wordlist import Graph
+from wordlist import Graph, getscrabblescore
 
 from flask_security import SQLAlchemyUserDatastore, Security, login_required
 from flask_security import current_user
@@ -18,11 +18,15 @@ security = Security(app, user_datastore)
 
 
 # tears->smile
+
 @app.route('/')
 @app.route('/index')
 def index():    
     return render_template('index.html',user={})
 
+@app.route('/apihelper')
+def showapihelper():    
+    return render_template('api.html')
 @app.route('/logoutuser')
 def logoutuser():
     return render_template('index.html')
@@ -50,8 +54,11 @@ def wordladder():
 @app.route('/wordsapi/v1.0/words/<int:length>',methods=['GET'])
 def get_wordsbylength(length):
     words = Word.query.filter_by(wordlength=length)
-    result = [w.serialize for w in words.all()]	
+    result = [w.word for w in words.all()]	
     return jsonify(words=result,error='')
+@app.route('/wordsapi/v1.0/words/getscrabblescore/<string:word>',methods=['GET'])
+def get_scrabbblescrore(word):
+    return jsonify(score=getscrabblescore(word))
 
 @app.route('/wordsapi/v1.0/words/<int:length>/count',methods=['GET'])
 def get_wordsbylengthcount(length):

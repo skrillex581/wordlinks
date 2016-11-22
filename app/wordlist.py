@@ -5,6 +5,13 @@ import os
 from app.utils.spgraph import Graph as dGraph, PathNotFound
 from app.models import Word
 
+#http://www.scrabblepages.com/scrabble/rules/
+def getscrabblescore(word):
+    if not type(word) is str or len(word)==0:
+        return 0    
+    word = word.upper().trim()    
+    scores = {"AEILNORSTU":1, "DG":2, "BCMP":3, "FHVWY":4, "K":5, "JX":8, "QZ":10}
+    return sum(map(lambda x:[scores[f] for f in scores.keys() if x in f][0], list(word)))
 
 #dictionary supports TEARS->SEARS->STARS->STARE->STALE->STILE->SMILE
 class Graph(object):

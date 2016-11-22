@@ -14,7 +14,12 @@ label {
 input[type=text],
 input[type=password],
 textarea {
-    width: 150px;
+    width: 250px;
+}
+
+input[type=checkbox] {
+    height: 20px;
+    padding: 0 0 0 0;
 }
 
 #main {

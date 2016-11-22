@@ -9,3 +9,4 @@ class RegistrationForm(Form):
 class LoginForm(Form):
     username = TextField() 
     remember_me = BooleanField('remember_me', default=True)
+

@@ -12,4 +12,4 @@ mail = Mail(app)
 from app import models
 user_datastore = SQLAlchemyUserDatastore(db, models.User, models.Role)
 security = Security(app, user_datastore)
-from app import views #do not get clever by moving this line further up!
+from app import views

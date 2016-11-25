@@ -22,10 +22,10 @@ MAIL_USE_TLS = False
 MAIL_DEBUG = True
 MAIL_USERNAME = "alphacat01@gmail.com"
 MAIL_SUPPRESS_SEND = False
-if not "MAIL_PASSWORD" in os.environ:
-    MAIL_PASSWORD = getpass("Enter the password to mail account '{0}': ".format(MAIL_USERNAME))
-    os.environ["MAIL_PASSWORD"] = MAIL_PASSWORD
-MAIL_PASSWORD = os.environ["MAIL_PASSWORD"]
+if not "CAT_CART" in os.environ:
+    MAIL_PASSWORD = getpass("Enter the password to mail account '{0}': ".format(MAIL_USERNAME))    
+    os.environ["CAT_CART"] = str(MAIL_PASSWORD)
+MAIL_PASSWORD = os.environ["CAT_CART"]
 
 
 #flask-security

@@ -1,0 +1,30 @@
+{%extends 'base.html'%} {%block title%}Main Page{%endblock%} {%block body%} TARGET GAME
+<div ng-controller="wordladdercontroller">
+    <form method="POST" name="login" action="/anagram" class="form-vertical">
+        <div class="form-group ">
+            <label for="txWord">Word</label>
+            <input id="txWord" ng-model="myword" name="txWord" class="form-control col-xs-3" required />
+        </div>
+        <div class="form-group">
+            <a class="btn btn-default" href="{{url_for('index')}}">Cancel</a>
+            <input type="button" value="Submit" class="btn btn-success" ng-click="clicksubmit(myword)" />
+        </div>
+    </form>
+    <table>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Words for {%raw%}{{myword}}{%endraw%}</th>
+                </tr>
+            </thead>
+            <tr ng-show="!words.length">
+                <td colspan="1">Nothing found?</td>
+            </tr>
+            <tr ng-repeat="word in words">
+                <td>{% raw %}{{word}}{% endraw %}</td>
+            </tr>
+        </table>
+
+</div>
+{%endblock%} {%block scripts%}
+<script type="text/javascript" src="/static/js/ag-geotrack.js"></script> {%endblock%}

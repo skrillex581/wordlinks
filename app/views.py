@@ -17,7 +17,7 @@ from utils.crypto import getsha256
 import  config 
 from app import user_datastore, security
 
-
+ 
 # tears->smile
 
 @app.route('/')
@@ -47,10 +47,15 @@ def approvals():
 def about():
     return render_template('about.html')    
 
+@app.route('/target')
+@login_required
+def target():
+    return render_template('target.html')
+
 @app.route('/wordladder')
 @login_required
 def wordladder():
-    return render_template('wordladder.html')
+    return render_template('target.html')
 
 # API 
 

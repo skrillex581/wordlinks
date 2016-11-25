@@ -3,7 +3,7 @@ from getpass import getpass
 basedir = os.path.abspath(os.path.dirname(__file__))
 DEBUG=True
 WTF_CSRF_ENABLED = True
-SECRET_KEY = "m48Xyp70wZTzVEjfLeHv-JoumAS3p035-p13LK0P"
+SECRET_KEY = "26-J0um@S3p035-p13LK0P"
 SQLALCHEMY_DATABASE_URI = "mysql://words:wordsdev@192.168.0.21/wordlist"  #'sqlite:///' + os.path.join(basedir, 'wordlit.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, "db_repository")
 SQLALCHEMY_TRACK_MODIFICATIONS = True

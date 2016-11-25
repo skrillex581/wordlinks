@@ -27,9 +27,11 @@ if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):
 	api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
 	app.logger.info("Creating database... {0}".format(SQLALCHEMY_DATABASE_URI))
 	app.logger.info("Importing word lists...")
+	app.logger.info("Downloading wordlist from {0}".format(WORD_FILE_URL))
 	c = 0
 	d = FileDownloader(WORD_FILE_URL)
 	d.DownloadUrl(WORD_FILE)
+	app.logger.info("Wordlist downloaded and saved to {0}".format(WORD_FILE))
 	if os.path.isfile(WORD_FILE):
 		with open(WORD_FILE) as f:
 			for line in f:

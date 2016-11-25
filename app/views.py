@@ -13,6 +13,7 @@ from wordlist import Graph, getscrabblescore
 from flask_security import SQLAlchemyUserDatastore, Security, login_required
 from flask_security import current_user
 from utils.crypto import getsha256
+import  config 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
@@ -120,11 +121,11 @@ def get_wordladder(word1, word2):
 #####################
 @app.before_first_request
 def create_initial_data():
-    msg = Message("Application has started",recipients=["mailbox@a20.co.za"])    
+    msg = Message("Application has started.",recipients=config.ADMINS)    
     mail.send(msg)    
     pass
 
 @app.before_request
 def before_request():
-    print "Requesting something"
+    print "Request has been made."
     g.user = current_user

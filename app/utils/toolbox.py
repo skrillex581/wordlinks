@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#https://raw.githubusercontent.com/dwyl/english-words/master/words2.txt
 import urllib2
 class FileDownloader(object):
     def __init__(self,url, output=False):

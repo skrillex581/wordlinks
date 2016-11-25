@@ -99,5 +99,3 @@ ENV/
 # Rope project settings
 .ropeproject
 
-wordlit.db
-enwords.txt

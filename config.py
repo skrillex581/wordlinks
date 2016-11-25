@@ -10,6 +10,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 LOG_FILE_NAME = "app.log"
 
 WORD_FILE = "enwords.txt"
+WORD_FILE_URL = "https://raw.githubusercontent.com/dwyl/english-words/master/words2.txt"
 # mail server settings
 # python -m smtpd -n -c DebuggingServer localhost:25
 MAIL_SERVER = "smtp.gmail.com"
@@ -24,7 +25,6 @@ if not "MAIL_PASSWORD" in os.environ:
     MAIL_PASSWORD = getpass("Enter the password to mail account '{0}': ".format(MAIL_USERNAME))
     os.environ["MAIL_PASSWORD"] = MAIL_PASSWORD
 MAIL_PASSWORD = os.environ["MAIL_PASSWORD"]
-print os.environ["MAIL_PASSWORD"]
 # administrator list
 ADMINS = ["mailbox@a20.co.za"]
 

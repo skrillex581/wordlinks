@@ -27,6 +27,7 @@ def index():
 @app.route('/apihelper')
 def showapihelper():    
     return render_template('api.html')
+
 @app.route('/logoutuser')
 def logoutuser():
     return render_template('index.html')
@@ -56,6 +57,7 @@ def get_wordsbylength(length):
     words = Word.query.filter_by(wordlength=length)
     result = [w.word for w in words.all()]	
     return jsonify(words=result,error='')
+    
 @app.route('/wordsapi/v1.0/words/getscrabblescore/<string:word>',methods=['GET'])
 def get_scrabbblescrore(word):
     return jsonify(score=getscrabblescore(word))

@@ -1,8 +1,13 @@
 #!/usr/bin/env python
+
+ 
+
 from migrate.versioning import api
 from config import SQLALCHEMY_DATABASE_URI,SQLALCHEMY_MIGRATE_REPO, LOG_FILE_NAME
-from config import WORD_FILE
-from app import db,models,app,user_datastore
+from config import WORD_FILE,WORD_FILE_URL
+
+from app import db,models,app
+from app.utils.toolbox import FileDownloader
 from colorama import init
 import logging
 from logging.handlers import RotatingFileHandler
@@ -13,17 +18,17 @@ init()
 handler = RotatingFileHandler(LOG_FILE_NAME,maxBytes=10000, backupCount=1)
 handler.setLevel(logging.INFO)
 app.logger.addHandler(handler)
-
 app.logger.info("About to call db.create_all().")
 db.create_all()
 app.logger.info("db.create_all() completed.")
-
 if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):
 	api.create(SQLALCHEMY_MIGRATE_REPO, 'database repository')
 	api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
 	app.logger.info("Creating database... {0}".format(SQLALCHEMY_DATABASE_URI))
 	app.logger.info("Importing word lists...")
 	c = 0
+	d = FileDownloader(WORD_FILE_URL)
+	d.DownloadUrl(WORD_FILE)
 	if os.path.isfile(WORD_FILE):
 		with open(WORD_FILE) as f:
 			for line in f:

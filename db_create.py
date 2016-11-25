@@ -1,17 +1,15 @@
-#!/usr/bin/env python
-
- 
+#!/usr/bin/env python 
 
 from migrate.versioning import api
 from config import SQLALCHEMY_DATABASE_URI,SQLALCHEMY_MIGRATE_REPO, LOG_FILE_NAME
 from config import WORD_FILE,WORD_FILE_URL
 
-from app import db,models,app
+from app import db,models,app, user_datastore
 from app.utils.toolbox import FileDownloader
+from flask_security.utils import encrypt_password
 from colorama import init
 import logging
 from logging.handlers import RotatingFileHandler
-from hashlib import sha256
 import os.path
 
 init()
@@ -20,6 +18,9 @@ handler.setLevel(logging.INFO)
 app.logger.addHandler(handler)
 app.logger.info("About to call db.create_all().")
 db.create_all()
+#create a default user
+user_datastore.create_user(email='buttsmckraken@bikinibottom.com', password=encrypt_password('password'))
+db.session.commit()
 app.logger.info("db.create_all() completed.")
 if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):
 	api.create(SQLALCHEMY_MIGRATE_REPO, 'database repository')

@@ -7,15 +7,15 @@ from sqlalchemy.sql.expression import func
 
 from app import app, db, mail
 from app.utils.spgraph import PathNotFound
+from app.utils.crypto import getsha512
 from models import Word, User, Role
 from wordlist import Graph, getscrabblescore
 
-from flask_security import SQLAlchemyUserDatastore, Security, login_required
-from flask_security import current_user
+from flask_security import login_required, current_user
+from flask_security.utils import encrypt_password
 from utils.crypto import getsha256
 import  config 
-user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
+from app import user_datastore, security
 
 
 # tears->smile
@@ -23,6 +23,7 @@ security = Security(app, user_datastore)
 @app.route('/')
 @app.route('/index')
 def index():    
+    
     return render_template('index.html',user={})
 
 @app.route('/apihelper')
@@ -121,7 +122,7 @@ def get_wordladder(word1, word2):
 #####################
 @app.before_first_request
 def create_initial_data():
-    msg = Message("Application has started.",recipients=config.ADMINS)    
+    msg = Message("Application has started.",recipients=config.ADMINS)        
     mail.send(msg)    
     pass
 

@@ -10,8 +10,6 @@ db = SQLAlchemy(app)
 mail = Mail(app)
 
 from app import models
-#user_datastore.create_user(email='matt@nobien.net', password='password')
 user_datastore = SQLAlchemyUserDatastore(db, models.User, models.Role)
 security = Security(app, user_datastore)
 from app import views
-#from models import User, Role

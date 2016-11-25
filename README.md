@@ -9,3 +9,4 @@ I'm redoing my python-wordladder app. You will notice very quickly that this is 
 6. Update the `config.py` by changing the `ADMINS` email address list.
 7. Get everything running by `./run.py`.
 8. You may want to go [http://127.0.0.1:5000/apihelper] (apihelper page) before you actually log in.
+9. There is a scrabble word scorer, and a target word and wordladder api.  

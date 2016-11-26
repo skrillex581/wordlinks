@@ -55,7 +55,7 @@ def target():
 @app.route('/wordladder')
 @login_required
 def wordladder():
-    return render_template('target.html')
+    return render_template('wordladder.html')
 
 # API 
 

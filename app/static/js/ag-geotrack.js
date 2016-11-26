@@ -44,7 +44,19 @@
 
     /* controller approvals */
     app.controller('wordladdercontroller', function($scope, $http) {
-        $scope.clicksubmit = function(myword) {
+        $scope.getwordladder = function(start, end) {
+            $http.get('http://localhost:5000/wordsapi/v1.0/words/ladder/' + start + '/' + end + '/').then(
+                function(response) {
+                    console.log(response.data)
+                    $scope.words = response.data.words;
+                    console.log($scope.words)
+                },
+                function(response) {
+                    console.log(response.data.error)
+                });
+            return false;
+        }
+        $scope.getanagrams = function(myword) {
             $http.get('http://localhost:5000/wordsapi/v1.0/words/anagram/' + myword + '/').then(
                 function(response) {
                     console.log(response.data)

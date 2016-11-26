@@ -1,13 +1,17 @@
-{%extends 'base.html'%} {%block title%}Main Page{%endblock%} {%block body%} TARGET GAME
+{%extends 'base.html'%} {%block title%}Main Page{%endblock%} {%block body%} WORDLADDER GAME
 <div ng-controller="wordladdercontroller">
     <form method="POST" name="login" action="/anagram" class="form-vertical">
         <div class="form-group ">
-            <label for="txWord">Word</label>
-            <input id="txWord" ng-model="myword" name="txWord" class="form-control col-xs-3" required />
+            <label for="txStart">Start Word</label>
+            <input id="txStart" ng-model="start" name="txStart" class="form-control col-xs-3" required />
+        </div>
+        <div class="form-group ">
+            <label for="txWord">End Word</label>
+            <input id="txEnd" ng-model="end" name="txEnd" class="form-control col-xs-3" required />
         </div>
         <div class="form-group">
             <a class="btn btn-default" href="{{url_for('index')}}">Cancel</a>
-            <input type="button" value="Submit" class="btn btn-success" ng-click="getanagrams(myword)" />
+            <input type="button" value="Submit" class="btn btn-success" ng-click="getwordladder(start,end)" />
         </div>
     </form>
     <table>

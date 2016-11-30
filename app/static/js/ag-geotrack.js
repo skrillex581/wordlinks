@@ -21,16 +21,46 @@
             }
         }
     }
+    //https://appendto.com/2016/02/working-promises-angularjs-services/
+    function wordServiceAPI($http, $q) {
+        var deferred = $q.defer();
+        this.GetAnagrams = function(word) {
+            return $http.get('http://127.0.0.1:5000/wordsapi/v1.0/words/anagram/' + word + '/')
+                .then(function(response) {
+                        deferred.resolve(response.data);
+                        return deferred.promise;
+                    },
+                    function(response) {
+                        deferred.reject(response);
+                        return deferred.promise;
+                    });
+        }
+        this.GetWordLadder = function(start, end) {
+            return $http.get('http://127.0.0.1:5000/wordsapi/v1.0/words/getladder/' + start + '/' + end + '/')
+                .then(function(response) {
+                        //promise is fulfilled
+                        deferred.resolve(response.data);
+                        //promise is resolved
+                        return deferred.promise;
+                    },
+                    function(response) {
+                        //the followig line rejects the promise
+                        deferred.reject(response);
+                        return deferred.promise;
+                    });
+        }
+    }
 
     var app = angular.module('wordgames', []);
 
-    app.service('interceptor', interceptor);
-
+    app.service('interceptor', interceptor); //inject srevices
+    app.service('WordGameAPI', wordServiceAPI)
 
     /* application configuration section */
 
     app.config(function($httpProvider) {
         $httpProvider.interceptors.push('interceptor');
+        //todo: configure base url for api calls
     });
 
     /* run on app initialisation (like a constructor) */
@@ -43,53 +73,28 @@
 
 
     /* controller approvals */
-    app.controller('wordladdercontroller', function($scope, $http) {
+    app.controller('wordladdercontroller', function($scope, $http, WordGameAPI) {
         $scope.getwordladder = function(start, end) {
-            $http.get('http://localhost:5000/wordsapi/v1.0/words/ladder/' + start + '/' + end + '/').then(
-                function(response) {
-                    console.log(response.data)
-                    $scope.words = response.data.words;
-                    console.log($scope.words)
-                },
-                function(response) {
-                    console.log(response.data.error)
-                });
-            return false;
+            WordGameAPI.GetWordLadder(start, end)
+                .then(function(result) {
+                        console.log(result.words);
+                        $scope.data = result;
+                    },
+                    function(error) {
+                        console.log(error.statusText);
+                    });
         }
+
+
         $scope.getanagrams = function(myword) {
-            $http.get('http://localhost:5000/wordsapi/v1.0/words/anagram/' + myword + '/').then(
-                function(response) {
-                    console.log(response.data)
-                    $scope.words = response.data.words;
-                    console.log($scope.words)
-                },
-                function(response) {
-                    console.log(response.data.error)
-                });
-            return false;
-        }
-    });
-    app.controller('approvals', function($scope, $http) {
-        $http.get('/geotracker/getapprovalslist').then(
-            function(response) {
-                $scope.data = response.data;
-            },
-            function(response) {
-                console.log(response.statusText)
-            });
-        $scope.onclick = function(id) {
-            $http.get('/geotracker/approve/' + id + '/').then(
-                function(response) {
-                    console.log('Approval success.');
-                    for (var i = 0; i < $scope.data.length; i++) {
-                        if ($scope.data[i].Id == id) {
-                            $scope.data.splice(i, 1);
-                        }
-                    }
-                },
-                function(response) {
-                    console.log('Approval failure.')
-                });
+            WordGameAPI.GetAnagrams(myword)
+                .then(function(result) {
+                        console.log(result.words);
+                        $scope.data = result;
+                    },
+                    function(error) {
+                        console.log(error.statusText);
+                    });
         }
     });
 

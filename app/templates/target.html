@@ -17,10 +17,19 @@
                     <th>Words for {%raw%}{{myword}}{%endraw%}</th>
                 </tr>
             </thead>
-            <tr ng-show="!words.length">
+            <tr ng-show="!data.words.length && data.error">
                 <td colspan="1">Nothing found?</td>
             </tr>
-            <tr ng-repeat="word in words">
+            <tr ng-show="!data.error && data.words.length>0">
+                <td>Lognest word length: {% raw %}{{data.stats.longestwordlength}}{% endraw %}</td>
+            </tr>
+            <tr ng-show="!data.error && data.words.length>0">
+                <td>Lognest word(s): {% raw %}{{data.stats.longestwords.join()}}{% endraw %}</td>
+            </tr>
+            <tr ng-show="!data.error && data.words.length>0">
+                <td>Number of words found : {% raw %}{{data.stats.wordcount}}{% endraw %}</td>
+            </tr>
+            <tr ng-repeat="word in data.words">
                 <td>{% raw %}{{word}}{% endraw %}</td>
             </tr>
         </table>

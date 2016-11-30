@@ -67,12 +67,12 @@ def get_wordsbylength(length):
     
 @app.route('/wordsapi/v1.0/words/getscrabblescore/<string:word>',methods=['GET'])
 def get_scrabbblescrore(word):
-    return jsonify(score=getscrabblescore(word))
+    return jsonify(score=getscrabblescore(word),error='')
 
 @app.route('/wordsapi/v1.0/words/<int:length>/count',methods=['GET'])
 def get_wordsbylengthcount(length):
     wordcount = Word.query.filter_by(wordlength=length).count()
-    return jsonify(count=wordcount)
+    return jsonify(count=wordcount,error='')
 
 
 @app.route('/wordsapi/v1.0/words/anagram/<string:word1>/',defaults={'letter':None,'minwordlength':4},methods=['GET'])
@@ -110,18 +110,18 @@ def updatesorted():
     db.session.commit()
 
 
-@app.route('/wordsapi/v1.0/words/ladder/<string:word1>/<string:word2>/',methods=['GET'])
+@app.route('/wordsapi/v1.0/words/getladder/<string:word1>/<string:word2>/',methods=['GET'])
 def get_wordladder(word1, word2):
     app.logger.info("Trying to find ladder between {0} and {1}".format(word1,word2))
     if not len(word1.strip())==len(word2.strip()):
-        return make_response(jsonify(error='Word lengths do not match.'),500)
+        return make_response(jsonify(error='Word lengths do not match.'),200)
     else:
         g = Graph("/home/marmite/kratosdb")	
         g.BuildMatchingsFromDatabase(len(word1))
         try:
             return jsonify(error='',words=g.FindLadder(word1,word2))
         except PathNotFound,e:	
-            return make_response(jsonify(words=[],error='Path not found between %s and %s'%(word1,word2)),500)
+            return make_response(jsonify(words=[],error='Path not found between %s and %s'%(word1,word2)),200)
 
 
 #####################
